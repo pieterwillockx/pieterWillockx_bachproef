@@ -1,0 +1,18 @@
+\select@language {dutch}
+\contentsline {chapter}{\numberline {1}Inleiding}{4}{chapter.1}
+\contentsline {section}{\numberline {1.1}Wat is een microservice?}{4}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Klein, en met \IeC {\'e}\IeC {\'e}n duidelijke verantwoordelijkheid}{4}{subsection.1.1.1}
+\contentsline {subsection}{\numberline {1.1.2}Autonoom}{5}{subsection.1.1.2}
+\contentsline {section}{\numberline {1.2}De microservice architectuur als een geheel}{6}{section.1.2}
+\contentsline {section}{\numberline {1.3}Samengevat}{7}{section.1.3}
+\contentsline {section}{\numberline {1.4}Probleemstelling en Onderzoeksvragen}{7}{section.1.4}
+\contentsline {chapter}{\numberline {2}Methodologie}{8}{chapter.2}
+\contentsline {chapter}{\numberline {3}De Microservice Architecture geanalyseerd}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Technology Heterogeneity}{9}{section.3.1}
+\contentsline {section}{\numberline {3.2}Resilience}{10}{section.3.2}
+\contentsline {section}{\numberline {3.3}Scaling}{11}{section.3.3}
+\contentsline {section}{\numberline {3.4}Ease of Deployment}{12}{section.3.4}
+\contentsline {section}{\numberline {3.5}Organizational Alignment}{13}{section.3.5}
+\contentsline {section}{\numberline {3.6}Composability}{14}{section.3.6}
+\contentsline {section}{\numberline {3.7}Optimizing for Replaceability}{15}{section.3.7}
+\contentsline {chapter}{\numberline {4}Conclusie}{16}{chapter.4}
