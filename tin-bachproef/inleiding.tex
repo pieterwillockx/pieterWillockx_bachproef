@@ -1,0 +1,62 @@
+\chapter{Inleiding}
+\label{ch:inleiding}
+
+%De inleiding moet de lezer alle nodige informatie verschaffen om het onderwerp te begrijpen zonder nog externe werken te moeten raadplegen \citep{Pollefliet2011}. Dit is een doorlopende tekst die gebaseerd is op al wat je over het onderwerp gelezen hebt (literatuuronderzoek).
+
+%Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz. naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${cite\{\}}} of \texttt{$\backslash${citep\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\TeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin, gebruik je \texttt{$\backslash${}cite\{\}}.
+%Soms wil je de auteur niet expliciet vernoemen, dan gebruik je \texttt{$\backslash${}citep\{\}}. Hieronder een voorbeeld van elk.
+
+%\cite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\citep{Creeger2009}.
+\section{Wat is een microservice?}
+\label{sec:wat-is-een-microservice}
+In het licht van de probleemstelling die in de samenvatting aan bod kwam was er dus een nood aan een nieuwe soort architectuur. Een architectuur die ontwikkelaars in staat stelde om applicaties aan te leveren die door meerdere verschillende soorten gebruikers konden geconsumeerd worden. De Microservices Architecture biedt hiervoor een oplossing. 
+\\
+In de praktijk is een microservice een kleine, autonome service die volledig individueel draait op een systeem, en samenwerkt met andere microservices om een geheel van functionaliteit te vormen. Meteen merkt u 2 kernwoorden op: klein en autonoom. Hier gaan we verder op in.
+\\
+\subsection{Klein, en met één duidelijke verantwoordelijkheid}
+\label{subsec:klein}
+De grootte van een service is moeilijk te meten. Wanneer bijvoorbeeld het aantal lijnen code wordt opgeteld, kan men meestal nog steeds niet zeggen of het gaat over een grote of een kleine service. Bepaalde codetalen zijn namelijk expressiever dan anderen en krijgen dezelfde functionaliteit uitgeschreven in slechts een fractie van de lijnen code. Toch moet een microservice klein zijn. De "grootte" van een microservice wordt vooral bepaald door de functionaliteit die het bevat. Er wordt gestreefd naar een service die één duidelijke verantwoordelijkheid heeft en in die zin mag het slechts functionaliteit bevatten die rechtstreeks inspeelt op deze verantwoordelijkheid. Maar waar liggen de grenzen van deze verantwoordelijkheid? Welke code is acceptabel om op te nemen in een service en welke code treedt over de grenzen hiervan?
+\\
+Hier is geen eenduidig antwoord voor. De ontwikkelaar of het team van ontwikkelaars bepaalt zelf deze grenzen, maar deze zijn echter meestal intuïtief. We nemen als voorbeeld een inlog-systeem van een applicatie voor het quoteren van films. Een service voor het inloggen en uitloggen van gebruikers op het systeem zal in dit geval verantwoordelijk zijn voor het ophalen van de gebruikersgegevens aan de hand van de gebruikersnaam en het wachtwoord, het creëren van een sessie-token voor de gebruiker, de gebruiker op ingelogd/uitgelogd zetten in de database en dergelijke. Moet er echter een functionaliteit zijn die de onlangs gequoteerde films van de gebruiker moet ophalen nadat hij is ingelogd, dan laten we deze functionaliteit beter over aan een andere service. Op deze manier creëren we verschillende loshangende services die compact zijn en een duidelijke verantwoordelijkheid hebben.
+\\
+Een andere manier om te bepalen of een service klein genoeg is, is door te kijken hoeveel ontwikkelaars nodig zijn om ze te onderhouden. Wanneer een team van ontwikkelaars werkt via de microservice architectuur is het logisch dat het hele team opgesplitst wordt in kleinere teams die elk aan hun eigen service werken. Wanneer men ziet dat een service te groot wordt en niet meer efficiënt kan beheerd worden door één team, dan is dit een reden om na te denken over een opsplitsing van deze service in kleinere en eenvoudigere delen.
+\\
+\\
+\subsection{Autonoom}
+\label{subsec:autonoom}
+Een microservice moet  autonoom zijn in enkele opzichten. Eerst en vooral moet ze gezien worden als een aparte entiteit. Een stuk code dat op een aparte "machine" draait, of een apart systeemproces is. Een microservice kan dus in dit opzicht gezien worden als een aparte, kleine applicatie die deel uitmaakt van een groter geheel.
+\\
+Dat een microservice autonoom is, wil niet zeggen dat deze volledig afgesloten van de andere services zal functioneren. Microservices communiceren namelijk met elkaar voor het verkrijgen van data die buiten hun verantwoordelijkheidsveld ligt, maar die wel van belang is voor het uitvoeren van hun eigen taak. Zo zal een login-service bijvoorbeeld contact zoeken met een encryptie-service wanneer een ingegeven wachtwoord moet vergeleken worden met het geëncrypteerde wachtwoord dat uit de databank komt.
+\\
+Wanneer een microservice crasht door een systeemfout, moeten er systemen zijn ingebouwd die ervoor zorgen dat de andere microservices kunnen blijven verdergaan, eventueel met mindere functionaliteit. In dit opzicht kan er ook over autonomie gesproken worden.
+\newpage
+\section{De microservice architectuur als een geheel}
+\label{microservice-geheel}
+Nu een duidelijk beeld gevormd is van wat een microservice op zichzelf is, kan besproken worden hoe deze zich gedraagt in een volledig systeem. Hoe krijgt men hetzelfde resultaat dat men zou hebben met een monolithische applicatie, maar dan met een microservice structuur. Welke systemen zijn er die de services koppelen, aanspreken, laten samenwerken met elkaar en die de data samen verpakken om een coherent resultaat terug te geven aan de gebruiker?
+\\
+In een monolithische applicatie is communicatie tussen verschillende services, of in dit geval methodes, vanzelfsprekend. Er wordt een instantie van een klasse aangemaakt en vervolgens kunnen zijn methoden aangeroepen worden. Communicatie tussen microservices daarentegen is niet zo vanzelfsprekend. Aangezien ze elk als een aparte instantie draaien kan er niet zomaar binnen het proces gecommuniceerd worden. 
+\\
+De communicatie tussen microservices gebeurd via het netwerk. Deze services maken gebruik van een mechanisme dat "Inter-process Communication" (IPC) genoemd wordt. Wanneer een bepaalde service informatie nodig heeft van een andere service, zal hij een "request" sturen en in de meeste gevallen ook een "response" terug verwachten. De communicatie binnen een microservice architectuur is dus te vergelijken met een reeks calls naar een "Application Programming Interface" (API). Hier wordt verder iets dieper op ingegaan.
+\\
+Communicatie tussen de services gebeurd via IPC, maar hoe communiceert een gebruiker met de applicatie?
+\\
+Hier zijn 2 technieken voor. Een ontwikkelaar kan er voor kiezen om de gebruikers rechtstreeks met de verschillende microservices te laten communiceren. Requests die de gebruiker verstuurd naar de services komen dus op dezelfde manier aan als die verstuurd door andere services, en worden ook op dezelfde manier verwerkt. Deze manier van werken is in principe mogelijk, maar wordt afgeraden. Dit omdat er geen onderscheid gemaakt wordt tussen communicatie met een gebruiker en communicatie met een service, terwijl we eerder bespraken dat er wel degelijk nood is aan onderscheid tussen verschillende clients.
+\\
+Een betere implementatie is daarom het gebruik van een API-gateway. Kort beschreven is dit een centraal punt waar alle requests van de client binnenkomen. Er kunnen meerdere API-gateways geïmplementeerd worden voor verschillende soorten clients, die de opgevraagde data elk op een specifieke manier behandelen om de data te optimaliseren alvorens ze terug naar de client gestuurd wordt. Ook hier wordt verder iets dieper op ingegaan.
+\section{Samengevat}
+\label{sec:samengevat}
+Een microservice is dus een klein, autonoom proces dat als een aparte instantie draait in een groter geheel. Er bestaat een duidelijke scheiding van verantwoordelijkheden, waarbij iedere service enkel en alleen zorgt voor zijn eigen taken en communiceert met andere services wanneer hij data nodig heeft dat buiten zijn verantwoordelijkheidsveld valt. Communicatie gebeurd via requests en responses over het netwerk, soortgelijk aan communicatie met een API.
+
+\section{Probleemstelling en Onderzoeksvragen}
+\label{sec:onderzoeksvragen}
+
+% TODO: Wees zo concreet mogelijk bij het formuleren van je
+% onderzoeksvra(a)g(en). Een onderzoeksvraag is trouwens iets waar nog
+% niemand op dit moment een antwoord heeft (voor zover je kan nagaan).
+% \lipsum[7-20]
+
+De microservice architectuur wordt tot op heden vooral gebruikt bij grotere bedrijven. Dit komt omdat de extra complexiteit die de architectuur met zich meebrengt kleinere bedrijven afschrikt om de overstap te maken. Teams moeten dynamischer te werk gaan en moeten opgesplitst worden in kleinere teams om efficiënt in een microservice omgeving te werken. De meeste van deze bedrijven houden zich dus nog steeds vast aan het monolithische model wanneer ze hun applicaties ontwikkelen. In een wereld die meer en meer zal bestaan uit clients van verschillende soorten en formaten, elk met hun eigen manier van omgang met data, kan dit ervoor zorgen dat software bedrijven oplossingen ontwikkelen die niet efficiënt kunnen geconsumeerd worden door elk soort client.
+\\
+\textbf{Kan er een gulden middenweg gevonden worden die het gemakkelijker maakt voor bedrijven om deze overstap te wagen}, en zo niet, \textbf{zijn er maatregelen die kunnen getroffen worden die de overstap van monolithic naar microservices in de toekomst gemakkelijker maakt?}
+\\
+Verder, is de microservice architecture wel de perfecte oplossing voor het maken van applicaties die door een grote variëteit aan clients kunnen geconsumeerd worden? Met andere woorden, \textbf{zijn microservices wel een vooruitgang op alle vlakken, vergeleken met het monolithische model?} Het is duidelijk dat er enkele nadelen verbonden zijn aan het werken volgens deze architectuur. \textbf{Zijn er oplossingen te vinden die deze nadelen kunnen doen verdwijnen?}

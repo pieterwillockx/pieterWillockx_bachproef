@@ -1,0 +1,87 @@
+\chapter{De Microservice Architecture geanalyseerd}
+\label{ch:analyse}
+
+De microservice architectuur werd ontwikkeld om een antwoord te bieden op enkele belangrijke ontwikkelingen in de informatica-wereld. Meer en meer toestellen zijn tegenwoordig verbonden met het internet, wat enkel zorgt voor extra dataverkeer. Applicaties moeten performant blijven, ongeacht het aantal gebruikers die tezelfdertijd verbinding willen leggen en ongeacht de grootte van de data die wordt opgevraagd.
+\\
+Er moet rekening gehouden worden met het feit dat niet elke client dezelfde data wilt. Het kan bijvoorbeeld nuttig zijn voor een webbrowser om data terug te krijgen als ruwe HTML-tekst, maar daarmee kan een mobiel toestel die een native app draait niets aanvangen.
+\\
+De extra complexiteit die een architectuur, toegespitst op deze problemen, met zich meebrengt mag zijn tol niet eisen op de ontwikkelaars. Het ontwikkelingsproces moet soepel verlopen en ontwikkelaars moeten in staat zijn om snel te reageren op problemen die zich ongetwijfeld zullen voordoen tijdens dit proces.
+\\
+De microservice architectuur is gebaseerd op enkele pijlers die beschrijven hoe deze problemen kunnen aangepakt worden.
+
+\section{Technology Heterogeneity}
+\label{sec:technology-heterogeneity}
+
+De dag van vandaag bestaat er een groot aantal codetalen. Elk daarvan heeft zijn voordelen en nadelen, en er zijn verschillende scenario's waarin een ontwikkelaar een voorkeur heeft voor een bepaalde taal om een bepaalde functionaliteit te implementeren. Monolithische applicaties zijn bijna altijd geschreven in één enkele codetaal waardoor ontwikkelaars geen keuze krijgen anders dan in die taal te programmeren. Enerzijds is dit een voordeel, want een applicatie die slechts in één codetaal geschreven is laag in complexiteit. Anderzijds is dit een nadeel, want voor sommige functionaliteiten in de applicatie zijn er misschien andere codetalen die een veel performantere en misschien wel eenvoudigere implementatie kunnen garanderen. Omdat een monolithische applicatie één geheel is, is dit echter onmogelijk.
+\\
+Bij microservices is dit anders. Een microservice applicatie bestaat uit meerdere individuele services. Deze kunnen elk in een andere codetaal geschreven worden en het geheel zal nog steeds zonder problemen functioneren. Dit biedt een zekere vorm van flexibiliteit, want voor elke functionaliteit kan nu de meest performante oplossing gezocht worden. We nemen als voorbeeld een sociaal netwerk-platform zoals Facebook of Twitter. Een dergelijke applicatie heeft te maken met miljoenen gebruikersaccounts, posts, foto's, volgers of vrienden en andere. Al deze data bijhouden moet op een zo performant mogelijke manier gebeuren aangezien er met zoveel data wordt omgegaan. Het is bijvoorbeeld voordelig om alle gebruikersaccounts in een graph-database te bewaren gezien de hoge graad van interconnectie, maar misschien kunnen de posts van deze gebruikers op een performantere manier in een document-database bewaard worden. De structuur van een microservices systeem laat ons toe om deze keuze te maken.
+\\
+Een ander voordeel is dat nieuwe technologieën veel gemakkelijker kunnen geïntegreerd worden in de applicatie. Wanneer men een nieuwe technologie wil uittesten op een monolithische applicatie zal dit impact hebben op een groot deel van het systeem, wat ontwikkelaars kan afschrikken. Als gevolg stellen we vast dat een monolithische applicatie meestal voor altijd zal blijven draaien op de technologieën die werden gekozen aan het begin van zijn ontwikkeling. Zulke applicaties zijn snel verouderd.
+\\
+Aangezien een microservice applicatie bestaat uit verschillende services kan een nieuwe technologie uitgetest worden op één enkele service zonder dat dit een impact heeft op de rest van de applicatie. De mogelijkheid om snel nieuwe technologieën op te pikken en te integreren in een applicatie kan een belangrijk voordeel zijn voor bedrijven die competitief willen blijven op de markt.
+
+\section{Resilience}
+\label{sec:resilience}
+
+Een belangrijk onderdeel bij het ontwikkelen van een applicatie is om ervoor te zorgen dat de kans op systeemfouten zo klein mogelijk wordt gemaakt. Wanneer een systeemfout voorkomt, valt het hele systeem in elkaar en in de meeste gevallen moet een manuele heropstart gedaan worden. Wanneer dit zich voordoet bij een applicatie die live draait voor de gebruikers kan men spreken van een klein rampscenario. Uiteraard kunnen niet alle fouten vermeden worden. Wanneer zich bijvoorbeeld een stroompanne of kortsluiting voordoet kan de infrastructuur falen en zal een applicatie hoe dan ook stoppen met functioneren. Toch zijn er maatregelen die kunnen genomen worden om een applicatie zo "failure-proof" mogelijk te maken.
+\\
+Een monolithische applicatie is in deze gevallen veel kwetsbaarder dan een microservices systeem. Wanneer zich in een monolithische applicatie een kritische systeemfout voordoet zal het hele systeem falen, ongeacht waar de fout gebeurde. Dit komt uiteraard omdat de hele applicatie samengebundeld is en op één instantie draait. Om zulke gebeurtenissen tegen te gaan kan geopteerd worden om meerdere instanties van dezelfde applicatie te draaien. Hierdoor kan overgeschakeld worden op een andere instantie bij fouten in het systeem. Dit is echter een vrij inefficiënte oplossing.
+\\
+Wanneer we microservices bekijken - we weten dat deze bestaat uit verschillende apart draaiende services - zien we dat deze voorvallen vanzelf al veel minder kritiek zijn voor het gehele systeem. Doet er zich een fout voor in een bepaalde service, dan sluit deze zich automatisch af. Andere services kunnen blijven voortgaan omdat deze op een aparte instantie draaien. Wanneer we nu gebruik maken van een soort "error-handler" die de wacht houdt over het gehele systeem, kunnen fouten in services geïsoleerd worden en kunnen deze gecontroleerd afgesloten worden. Andere services worden dan gewaarschuwd dat bepaalde functionaliteiten ontoegankelijk zijn, maar deze kunnen wel blijven doorgaan, hetzij met mindere functionaliteit. Services die cruciaal zijn voor het functioneren van de applicatie kunnen gedupliceerd worden zoals dat zou gedaan worden met een monolithische applicatie. We zien nu dat een microservice applicatie op een even performante manier met fouten kan omgaan vergeleken met een monolithische applicatie, door slechts een fractie van de infrastructuur te gebruiken.
+
+\section{Scaling}
+\label{sec:scaling}
+
+Een monolithische applicatie schalen is vanzelfsprekend. Men dupliceert de gehele applicatie op een nieuwe instantie. Hierdoor heeft het geheel twee keer zoveel capaciteit. Dit is echter een inefficiënte oplossing. In vele gevallen zijn er slechts enkele functionaliteiten in de applicatie die extra vermogen nodig hebben. Toch moet het gehele systeem geschaald worden om dit mogelijk te maken.
+\\
+Dankzij de losgekoppelde natuur van microservices wordt dit uiteraard een stuk simpeler. Enkel die service die meer vermogen nodig heeft moet geschaald worden terwijl de rest van het systeem op dezelfde grootte kan blijven verder draaien. Het voordeel hiervan kan eenvoudig aangetoond worden. 
+\\
+We nemen opnieuw het voorbeeld van een sociaal netwerk. Om het simpel te houden bestaat deze uit drie services die elk hun eigen verantwoordelijkheid hebben. Eén service staat in voor het ophalen van de vrienden van een gebruiker. Een tweede service staat in voor het inladen van de posts die de gebruiker en zijn vrienden gemaakt hebben. De laatste service houdt zich bezig met het ophalen van afbeeldingen die de gebruiker en zijn vrienden op hun profiel hebben. De "vrienden-service" zal simpelweg URL's naar de verschillende profielen doorsturen naar de client, wat weinig bandbreedte zal innemen. De "posts-service" moet elke post als een string doorsturen naar de client. Gezien een gebruiker typisch meer dan één post op zijn profiel heeft zal deze service meer capaciteit nodig hebben dan de vorige. Als laatste de "foto-service" die een groot aantal afbeeldingen zal moeten doorsturen in zijn responses. Afbeeldingen pakken uiteraard meer geheugen in dan strings, dus we zien hier dat deze service nog meer capaciteit zal nodig hebben om op dezelfde kracht te kunnen functioneren. Uit deze stellingen kunnen we afleiden dat bepaalde services meer geschaald zullen moeten worden dan anderen. Op onderstaande afbeelding is een mogelijke schaalbaarheids-strategie te zien die toepasbaar is op dit voorbeeld.
+\\
+\begin{center}
+\includegraphics[scale=0.3]{Scaling-Microservices}
+\end{center}
+
+\section{Ease of Deployment}
+\label{sec:ease-of-deployment}
+
+Als ontwikkelaar heb je een belangrijk voordeel in de business wanneer je updates en bugfixes sneller kan laten uitrollen dan de competitie. Dit is echter niet altijd gemakkelijk te verwezenlijken. Wanneer een deel van de code van een monolithische applicatie een update moet krijgen, is het niet zeker of deze aanpassingen of toevoegingen gevolgen zullen hebben op de rest van het systeem. Er moet een uitgebreide testfase voorgaan aan het uitrollen van updates.
+\\
+Een ander knelpunt is het feit dat wanneer er updates moeten uitgebracht worden, de hele applicatie die live op de servers draait offline moet worden gehaald zodat de aanpassingen geïntegreerd kunnen worden. Dit is een riskante onderneming, omdat je als uitgever van software niet wil dat je klanten voor langere tijd geen gebruik kunnen maken van de applicatie. Daarom is er gemakkelijk de neiging om veel updates samen te bundelen, en in één groot pakket uit te brengen. Dit zorgt ervoor dat de applicatie slechts voor korte tijd onbruikbaar is. Op zich is dit een goede strategie, maar ook hier zijn nadelen aan verbonden. Stel dat er per toeval toch een bug in de code van de update geslopen is. Omdat de update in een groot pakket uitgebracht is, is het niet altijd evident om de oorzaak van de fout op te sporen. Hierdoor kunnen live applicaties een langere tijd te kampen hebben met een fout in het systeem, terwijl de ontwikkelaars deze proberen op te sporen en op te lossen.
+\\
+Microservices zijn losgekoppeld van elkaar, en zijn elk relatief kleine stukken code. Dit maakt updaten gemakkelijk. Een service kan geüpdatet worden zonder dat het hele systeem opnieuw moet gecompileerd worden. Het risico van het uitbrengen van de update is een stuk lager dan bij het monolithische systeem, en in veel gevallen kan de gebruiker zelfs gebruik blijven maken van de meeste functies van de applicatie terwijl een update voor een bepaalde service wordt uitgerold. Ontwikkelaars kunnen nu veel frequenter verbeteringen uitbrengen, en als gevolg daarvan zal elke update van kleinere schaal zijn.
+\\
+Rolt er toch een bug uit met een bepaalde update, zal deze veel gemakkelijker op te sporen zijn. Wanneer men weet tijdens welke update de bug live kwam in het systeem, heeft men de oorzaak van de fout eigenlijk al gevonden. Zo kunnen fouten ook veel sneller uit het systeem gehaald worden.
+\\
+Over het algemeen is dus één van de belangrijkste troeven van de microservice architectuur. Hoe sneller updates kunnen uitrollen, hoe actueler een applicatie zal zijn. Dit kan voor een belangrijke voorsprong op de concurrentie zorgen.
+
+\section{Organizational Alignment}
+\label{sec:organizational-alignment}
+
+Met een groot team aan één applicatie werken kan de productiviteit verlagen. In een team van ontwikkelaars moet veel communicatie zijn, vooral wanneer deze ontwikkelaars tegelijkertijd aan dezelfde functionaliteiten moeten werken. Hoe groter het team, hoe meer dat er moet gecommuniceerd worden. Dit is niet altijd doenbaar.
+\\
+Het is voordelig om teams op te splitsen in kleinere sub-teams die elk aan aparte stukken code werken. Nog beter is het wanneer deze teams functionaliteiten kunnen implementeren zonder dat deze een invloed hebben op het werk van andere teams.
+\\
+De structuur van een microservice systeem leent zich uitermate tot het werken in sub-teams. Elk team werkt aan zijn eigen service en omdat de services onafhankelijk van elkaar zijn en bovendien losgekoppeld zijn van elkaar, zullen updates voor een bepaalde service geen invloed hebben op de al bestaande functionaliteit van andere services.
+
+\section{Composability}
+\label{sec:composability}
+
+Een ander belangrijk streefdoel bij het efficiënt ontwikkelen van applicaties is het hergebruik van code. Dit lijkt misschien vanzelfsprekend, een ontwikkelaar kan code "hergebruiken" door deze te kopiëren en te plakken van andere gelijkaardige stukken code, maar dit is geen efficiënte oplossing. Het wordt zelfs afgeraden om veel aan "copy-pasting" te doen in een project omdat dit onnodig veel extra lijnen toevoegt aan een applicatie die, als ze monolithisch is, al van grote omvang is. Er bestaan verschillende mogelijkheden die hergebruik van code toestaan zoals bijvoorbeeld het gebruik van abstractie en het samenkoppelen van klassen in interfaces. Voor een monolithische applicatie zijn dit zowat de voornaamste manieren. Is er echter geen betere manier om code te hergebruiken?
+\\
+Alweer toont de losgekoppelde structuur van een microservice applicatie zijn voordelen. Aangezien services op zichzelf al een werkend geheel zijn, kunnen ze hergebruikt worden zonder dat daar enig extra werk voor nodig is. Eén service kan bijvoorbeeld geconsumeerd worden door meerdere applicaties, aangezien het aanroepen van een service slechts een kwestie van een request te sturen is. Dit geeft ontwikkelaars de mogelijkheid om applicaties als het ware op te bouwen uit verschillende al bestaande services, wat de ontwikkelingstijd aanzienlijk naar omlaag kan drijven voor een nieuw project.
+\\
+Het kan zelfs nog een stap verder gaan door services rechtstreeks publiek toegankelijk te maken. Dit wordt tegenwoordig meer en meer gedaan. Wanneer een andere ontwikkelaar gebruik maakt van een service die over het internet beschikbaar is, noemen we dit het gebruik van "third-party services".
+\\
+Services kunnen verder voor elk soort client op andere manieren gekoppeld worden, om de data die aan deze clients aangeleverd wordt te optimaliseren voor hun gebruik. We nemen opnieuw het voorbeeld van Facebook. Wanneer een gebruiker via een webbrowser naar deze website surft, krijgt hij de gebruikelijke activiteitenfeed te zien. Naast deze activiteitenfeed staan tegenwoordig suggesties voor groepen, en gebruikers waar men mogelijks mee bevriend wil worden. Het is logisch dat dit zal geregeld worden door een aparte service, die rekening houdt met enkele algoritmen voor het bepalen van deze suggesties. Deze service zal dus aangeroepen worden wanneer de applicatie merkt dat een gebruiker via de webbrowser werkt. 
+\\
+Op een smartphone daarentegen, is er niet genoeg plaats op het scherm om deze suggesties te tonen. Wanneer een gebruiker dus via een smartphone communiceert met de applicatie, zal er geen gebruik gemaakt worden van de verzoek-service. Services worden op deze manier samengebundeld om de optimale data voor een bepaalde client terug te geven aan de gebruiker.
+
+\section{Optimizing for Replaceability}
+\label{sec:optimizing-for-replaceability}
+
+Applicaties of systemen upgraden naar nieuwere versies is niet altijd evident. Stel bijvoorbeeld dat een organisatie gebruik maakt van een server-applicatie om een bepaald proces in het bedrijf te automatiseren. Deze applicatie zal waarschijnlijk cruciaal zijn om efficiënt te kunnen werken binnen dit bedrijf, waardoor er integraal gebruik van zal worden gemaakt. Het is echter zo dat deze applicatie na verloop van tijd zal verouderen. Niemand wil het echter op zich nemen om de applicatie te vernieuwen. Ze is namelijk erg groot, en monolithisch, en zal dus veel tijd nodig hebben om geüpdatet te worden. Verder is het een risicovolle operatie omdat ze zo cruciaal is voor het bedrijf, waardoor mogelijke bugs van een nieuwe versie van dit systeem voor grote problemen zouden kunnen zorgen. Ontwikkelaars zitten nu vast met een systeem dat steeds ouder en ouder wordt.
+\\
+Het vervangen of zelfs compleet verwijderen van een microservice is echter een veel minder risicovolle onderneming. Omdat ze zo klein van omvang zijn kunnen ze in de meeste gevallen op enkele weken compleet herschreven worden. Verder zijn bugs in het systeem niet zo een groot probleem, omdat er veel minder afhangt van deze ene kleine service.
+\\
+Deze flexibiliteit zorgt ervoor dat microservice applicaties constant actueel kunnen gehouden worden. Nieuwere versies van technologieën zijn vaak performanter. De vlotte integratie van deze technologieën zorgt in zijn geheel dus ook voor een meer performant systeem.
